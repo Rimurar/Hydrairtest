@@ -68,7 +68,10 @@
             
             // Get current date to determine today's weekday
             const today = new Date();
-            const todayIndex = today.getDay();
+            let todayIndex = today.getDay();  // 0 = Sonntag, 1 = Montag, ..., 6 = Samstag
+
+            // Adjust todayIndex to match the German week (Montag = 0, ..., Sonntag = 6)
+            todayIndex = (todayIndex + 6) % 7;
             
             // List of weekdays in German
             const weekdays = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag', 'Sonntag'];
@@ -77,8 +80,8 @@
             const weekdayList = document.getElementById('weekdayList');
             weekdays.forEach((day, index) => {
                 const li = document.createElement('li');
-                const weightText = params[day.toLowerCase()] ? params[day.toLowerCase()] + ' ml' : 'N/A';
-                li.textContent = day + ': ' + weightText;
+                const weightLossText = params[day.toLowerCase()] ? params[day.toLowerCase()] + ' ml' : 'N/A';
+                li.textContent = day + ': ' + weightLossText;
                 li.classList.add('weekday-item');
                 if (index === todayIndex) {
                     li.setAttribute('id', 'today');
