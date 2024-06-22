@@ -50,47 +50,31 @@
     </div>
 
     <script>
-        // Function to parse URL parameters
-        function getUrlParams() {
-            const params = {};
-            const queryString = window.location.search.substring(1);
-            const pairs = queryString.split('&');
-            pairs.forEach(pair => {
-                const [key, value] = pair.split('=');
-                params[decodeURIComponent(key)] = decodeURIComponent(value);
-            });
-            return params;
+        // Function to fetch data from server
+        function fetchData() {
+            fetch('/Hydrair/data.json') // Replace with your server endpoint
+                .then(response => response.json())
+                .then(data => updateData(data))
+                .catch(error => console.error('Error fetching data:', error));
         }
 
-        // Function to update HTML elements with the parsed parameters
-        function updateData() {
-            const params = getUrlParams();
-            
-            // Get current date to determine today's weekday
-            const today = new Date();
-            let todayIndex = today.getDay();  // 0 = Sonntag, 1 = Montag, ..., 6 = Samstag
-
-            // Adjust todayIndex to match the German week (Montag = 0, ..., Sonntag = 6)
-            todayIndex = (todayIndex + 6) % 7;
-            
-            // List of weekdays in German
+        // Function to update HTML elements with fetched data
+        function updateData(data) {
             const weekdays = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag', 'Sonntag'];
-
-            // Populate the weekday list in HTML
             const weekdayList = document.getElementById('weekdayList');
             weekdays.forEach((day, index) => {
                 const li = document.createElement('li');
-                const weightLossText = params[day.toLowerCase()] ? params[day.toLowerCase()] + ' ml' : 'N/A';
-                li.textContent = day + ': ' + weightLossText;
+                const weightText = data[day.toLowerCase()] ? data[day.toLowerCase()] + ' ml' : 'N/A';
+                li.textContent = day + ': ' + weightText;
                 li.classList.add('weekday-item');
-                if (index === todayIndex) {
+                if (index === new Date().getDay()) {
                     li.setAttribute('id', 'today');
                 }
                 weekdayList.appendChild(li);
             });
 
             // Update CO2 snapshot
-            document.getElementById('co2Snapshot').textContent = params.co2 || 'N/A ppm';
+            document.getElementById('co2Snapshot').textContent = data.co2 || 'N/A ppm';
         }
 
         // Function to add manual input to the current day
@@ -114,8 +98,8 @@
             }
         }
 
-        // Call the updateData function on page load
-        window.onload = updateData;
+        // Initial data fetch when page loads
+        document.addEventListener('DOMContentLoaded', fetchData);
     </script>
 </body>
 </html>
