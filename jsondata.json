@@ -1,10 +1,10 @@
 {
-    "montag": " ml",
-    "dienstag": " ml",
-    "mittwoch": " ml",
-    "donnerstag": " ml",
-    "freitag": " ml",
-    "samstag": " ml" ,
-    "sonntag": " ml" ,  
-    "co2": " pppm"
+    "montag": "0 ml",
+    "dienstag": "0 ml",
+    "mittwoch": "0 ml",
+    "donnerstag": "0 ml",
+    "freitag": "0 ml",
+    "samstag": "0 ml" ,
+    "sonntag": "0 ml" ,  
+    "co2": "0 ppm"
 }
